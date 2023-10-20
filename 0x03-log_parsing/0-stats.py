@@ -39,21 +39,21 @@ def process_input_lines():
                 print("Error: {}.".format(e))
 
             if lines_processed % 10 == 0:
-                print(f'Total file size: {total_file_size}')
+                print(f'File size: {total_file_size}')
                 for code in sorted(status_codes.keys()):
                     if status_codes[code] > 0:
                         print(f'{code}: {status_codes[code]}')
 
         if (lines_processed < 10 or lines_processed % 10 > 0):
-            print(f'Total file size: {total_file_size}')
+            print(f'File size: {total_file_size}')
             for code in sorted(status_codes.keys()):
                 if status_codes[code] > 0:
                     print(f'{code}: {status_codes[code]}')
         elif line not in sys.stdin:
-            print(f'Total file size: {total_file_size}')
+            print(f'File size: {total_file_size}')
 
     except KeyboardInterrupt:
-        print(f'Total file size: {total_file_size}')
+        print(f'File size: {total_file_size}')
         for code in sorted(status_codes.keys()):
             if status_codes[code] > 0:
                 print(f'{code}: {status_codes[code]}')
