@@ -21,10 +21,10 @@ def process_input_lines():
         r'^(\d+\.\d+\.\d+\.\d+) - \[.*\] "GET \/projects\/260 HTTP\/1\.1" '
         r'(\d{3}) (\d+)'
     )
+    match = re.match(pattern, line)
 
     try:
         for line in sys.stdin:
-            match = re.match(pattern, line)
             if match:
                 ip, status_code, file_size = match.groups()
                 status_code = int(status_code)
@@ -39,9 +39,9 @@ def process_input_lines():
                     print(f'Total file size: {total_file_size}')
                     for code in sorted(status_codes.keys()):
                         if status_codes[code] > 0:
-                            print(f'{code}: {status_codes[code]}')
+                            print(f'{code}: {status_codes[code]}')       
 
-        if lines_processed < 10:
+        if match and (lines_processed < 10 or lines_processed % 10 > 0):
             print(f'Total file size: {total_file_size}')
             for code in sorted(status_codes.keys()):
                 if status_codes[code] > 0:
