@@ -1,62 +1,52 @@
 #!/usr/bin/python3
 """
-Log parsing
+Module with function for processing input lines and calculating statistics
 """
 import re
 import sys
 from collections import defaultdict
 
 
-def process_log_line(line, total_file_size, status_code_count):
-    """Processes a log line and update metrics"""
-    log_format = re.compile(
-        r'(\d+\.\d+\.\d+\.\d+) - \[.*\] '
-        r'"GET /projects/260 HTTP/1\.1" (\d+) (\d+)'
-        )
-    match = log_format.match(line)
-
-    if match:
-        ip, status_code, file_size = match.groups()
-
-        # Update total file size
-        total_file_size += int(file_size)
-
-        # Update status code count
-        if status_code in {'200', '301', '400',
-                           '401', '403', '404', '405', '500'}:
-            status_code_count[status_code] += 1
-
-    return total_file_size, status_code_count
-
-
-def print_statistics(total_file_size, status_code_count):
-    """Print the computed statistics"""
-    print(f'Total file size: {total_file_size}')
-    for code in sorted(status_code_count.keys()):
-        print(f'{code}: {status_code_count[code]}')
-
-
-def main():
-    """Read log lines and prints statistics"""
+def process_input_lines():
+    """
+    Processes a log line and update metrics
+    Raises: KeyboardInterrupt on interruption
+    """
     total_file_size = 0
-    status_code_count = defaultdict(int)
-    line_number = 0
+    status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
+                    403: 0, 404: 0, 405: 0, 500: 0}
+    lines_processed = 0
+
+    pattern = (
+        r'^(\d+\.\d+\.\d+\.\d+) - \[.*\] "GET \/projects\/260 HTTP\/1\.1" '
+        r'(\d{3}) (\d+)'
+    )
 
     try:
         for line in sys.stdin:
-            line_number += 1
+            match = re.match(pattern, line)
+            if match:
+                ip, status_code, file_size = match.groups()
+                status_code = int(status_code)
+                file_size = int(file_size)
 
-            total_file_size, status_code_count = process_log_line(
-                line, total_file_size, status_code_count)
+                total_file_size += file_size
+                if status_code in status_codes:
+                    status_codes[status_code] += 1
+                lines_processed += 1
 
-            # Print statistics after every 10 lines
-            if line_number % 10 == 0:
-                print_statistics(total_file_size, status_code_count)
+                if lines_processed % 10 == 0:
+                    print(f'Total file size: {total_file_size}')
+                    for code in sorted(status_codes.keys()):
+                        if status_codes[code] > 0:
+                            print(f'{code}: {status_codes[code]}')
 
     except KeyboardInterrupt:
-        # Handle keyboard interruption
-        print_statistics(total_file_size, status_code_count)
+        print(f'Total file size: {total_file_size}')
+        for code in sorted(status_codes.keys()):
+            if status_codes[code] > 0:
+                print(f'{code}: {status_codes[code]}')
 
 
 if __name__ == "__main__":
-    main()
+    process_input_lines()
