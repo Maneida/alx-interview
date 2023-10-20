@@ -21,37 +21,45 @@ def process_input_lines():
         r'^(\d+\.\d+\.\d+\.\d+) - \[.*\] "GET \/projects\/260 HTTP\/1\.1" '
         r'(\d{3}) (\d+)'
     )
-    match = re.match(pattern, line)
 
     try:
         for line in sys.stdin:
-            if match:
-                ip, status_code, file_size = match.groups()
-                status_code = int(status_code)
-                file_size = int(file_size)
+            match = re.match(pattern, line)
+            try:
+                if match:
+                    ip, status_code, file_size = match.groups()
+                    status_code = int(status_code)
+                    file_size = int(file_size)
 
-                total_file_size += file_size
-                if status_code in status_codes:
-                    status_codes[status_code] += 1
-                lines_processed += 1
+                    total_file_size += file_size
+                    if status_code in status_codes:
+                        status_codes[status_code] += 1
+                    lines_processed += 1
+            except Exception as e:
+                    print("Error: {}.".format(e))
 
-                if lines_processed % 10 == 0:
-                    print(f'Total file size: {total_file_size}')
-                    for code in sorted(status_codes.keys()):
-                        if status_codes[code] > 0:
-                            print(f'{code}: {status_codes[code]}')       
-
-        if match and (lines_processed < 10 or lines_processed % 10 > 0):
+            if lines_processed % 10 == 0:
+                print(f'Total file size: {total_file_size}')
+                for code in sorted(status_codes.keys()):
+                    if status_codes[code] > 0:
+                        print(f'{code}: {status_codes[code]}')
+                            
+        if (lines_processed < 10 or lines_processed % 10 > 0):
             print(f'Total file size: {total_file_size}')
             for code in sorted(status_codes.keys()):
                 if status_codes[code] > 0:
                     print(f'{code}: {status_codes[code]}')
+        elif not line in sys.stdin:
+            print(f'Total file size: {total_file_size}')
 
     except KeyboardInterrupt:
         print(f'Total file size: {total_file_size}')
         for code in sorted(status_codes.keys()):
             if status_codes[code] > 0:
                 print(f'{code}: {status_codes[code]}')
+
+    except Exception as e:
+        print("Error: {}".format(e))
 
 
 if __name__ == "__main__":
