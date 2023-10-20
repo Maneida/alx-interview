@@ -36,20 +36,20 @@ def process_input_lines():
                         status_codes[status_code] += 1
                     lines_processed += 1
             except Exception as e:
-                    print("Error: {}.".format(e))
+                print("Error: {}.".format(e))
 
             if lines_processed % 10 == 0:
                 print(f'Total file size: {total_file_size}')
                 for code in sorted(status_codes.keys()):
                     if status_codes[code] > 0:
                         print(f'{code}: {status_codes[code]}')
-                            
+
         if (lines_processed < 10 or lines_processed % 10 > 0):
             print(f'Total file size: {total_file_size}')
             for code in sorted(status_codes.keys()):
                 if status_codes[code] > 0:
                     print(f'{code}: {status_codes[code]}')
-        elif not line in sys.stdin:
+        elif line not in sys.stdin:
             print(f'Total file size: {total_file_size}')
 
     except KeyboardInterrupt:
