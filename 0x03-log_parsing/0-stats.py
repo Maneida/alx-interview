@@ -41,6 +41,12 @@ def process_input_lines():
                         if status_codes[code] > 0:
                             print(f'{code}: {status_codes[code]}')
 
+                elif lines_processed < 10:
+                    print(f'Total file size: {total_file_size}')
+                    for code in sorted(status_codes.keys()):
+                        if status_codes[code] > 0:
+                            print(f'{code}: {status_codes[code]}')
+
     except KeyboardInterrupt:
         print(f'Total file size: {total_file_size}')
         for code in sorted(status_codes.keys()):
