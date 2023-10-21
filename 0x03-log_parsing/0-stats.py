@@ -18,8 +18,8 @@ def process_input_lines():
     lines_processed = 0
 
     pattern = (
-        r'^(\d+\.\d+\.\d+\.\d+) - \[.*\] "GET \/projects\/260 HTTP\/1\.1" '
-        r'(\d{3}) (\d+)'
+        r'(\d+\.\d+\.\d+\.\d+|\w+)( - |-)\[.*\] '
+        r'\"GET \/projects\/260 HTTP\/1\.1\" (\d{3}) (\d+)'
     )
 
     try:
@@ -27,7 +27,7 @@ def process_input_lines():
             match = re.match(pattern, line)
             try:
                 if match:
-                    ip, status_code, file_size = match.groups()
+                    ip, hyphen, status_code, file_size = match.groups()
                     status_code = int(status_code)
                     file_size = int(file_size)
 
