@@ -20,7 +20,6 @@ def nqueens() -> None:
                 print("N must be at least 4")
                 sys.exit(1)
             else:
-                print("hello")
                 board = [-1 for i in range(N)]
                 solve_nqueens(N, board, 0)
         except ValueError:
