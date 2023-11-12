@@ -6,10 +6,10 @@ if (process.argv.length !== 3) {
 }
 const movieID = process.argv[2];
 const url = `https://swapi-api.alx-tools.com/api/films/${movieID}`;
-const request = require("request");
+const request = require('request');
 
 // Recursive function to get and print character names from  list of URLs
-function printNextCharacter(urls) {
+function printNextCharacter (urls) {
   // Removes first URL from list and parses it
   const characterURL = urls.shift();
   if (characterURL) {
@@ -25,7 +25,7 @@ function printNextCharacter(urls) {
 }
 
 // Fetches a list of character's URLs then uses a callback to print each one's name
-function printStarWarsCharacters(url) {
+function printStarWarsCharacters (url) {
   // Get list of URLs for characters in selected film
   request(url, function (error, response, body) {
     if (!error) {
