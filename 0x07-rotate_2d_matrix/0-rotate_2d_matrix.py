@@ -19,5 +19,5 @@ def rotate_2d_matrix(matrix: List[List[int]]) -> None:
                 (matrix[j][i], matrix[i][j]) = (matrix[i][j], matrix[j][i])
 
         # swap columns
-        for k in range(n):
-            matrix[k].reverse()
+        for k in matrix:
+            k.reverse()
