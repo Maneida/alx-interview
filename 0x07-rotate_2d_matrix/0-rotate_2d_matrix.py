@@ -5,7 +5,7 @@ Module to Rotate 2D Matrix
 from typing import List
 
 
-def rotate_2d_matrix(matrix: List) -> None:
+def rotate_2d_matrix(matrix: List[List[int]]) -> None:
     """ rotates matrix clockwise """
     row_len = len(matrix[0])
     column_len = len(matrix)
