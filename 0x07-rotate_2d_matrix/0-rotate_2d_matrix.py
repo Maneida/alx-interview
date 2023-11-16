@@ -4,6 +4,7 @@ Module to Rotate 2D Matrix
 """
 from typing import List
 
+
 def rotate_2d_matrix(matrix: List[List]) -> List[List]:
     """ rotates matrix clockwise """
     row_len = len(matrix[0])
@@ -13,7 +14,6 @@ def rotate_2d_matrix(matrix: List[List]) -> List[List]:
         matrix[0][0] = 5
         # transpose matrix
 
-        #swap columns
+        # swap columns
 
-        
     return matrix
