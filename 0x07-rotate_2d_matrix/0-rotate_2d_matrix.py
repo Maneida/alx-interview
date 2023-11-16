@@ -15,7 +15,7 @@ def rotate_2d_matrix(matrix):
     """
     if matrix is None:
         raise Exception
-    
+
     row_len = len(matrix[0])
     column_len = len(matrix)
 
