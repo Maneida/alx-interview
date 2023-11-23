@@ -13,12 +13,11 @@ def makeChange(coins, total):
     :return: Fewest number of coins needed. If total is 0 or less, return 0.
              If total cannot be met, return -1.
     """
-    if total < 0:
-        return 0
-    if total == 0:
+    if total <= 0:
         return 0
 
-    dp = [float('inf')] * (total + 1)
+    max_coins = total + 1
+    dp = [max_coins] * (total + 1)
 
     dp[0] = 0
 
@@ -27,7 +26,7 @@ def makeChange(coins, total):
             if coin <= i:
                 dp[i] = min(dp[i], dp[i - coin] + 1)
 
-    if dp[total] == float('inf'):
+    if dp[total] == max_coins:
         return -1
     else:
         return dp[total]
