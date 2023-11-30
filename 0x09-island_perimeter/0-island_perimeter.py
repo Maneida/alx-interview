@@ -3,6 +3,7 @@
 Island Perimeter module
 """
 
+
 def island_perimeter(grid):
     if not grid or not grid[0] or len(grid) > 100 or len(grid[0]) > 100:
         return 0
