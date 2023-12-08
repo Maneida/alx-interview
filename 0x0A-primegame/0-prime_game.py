@@ -2,53 +2,29 @@
 """
 Prime Game Module
 """
-from typing import List, Optional
+from typing import List
 
 
-def is_prime(num):
-    """ Function to check if a number is prime"""
-    if num < 2:
-        return False
-    for i in range(2, int(num**0.5) + 1):
-        if num % i == 0:
-            return False
-    return True
-
-
-def get_primes_up_to_n(n):
+def getPrimes(n: int) -> tuple:
     """ Gets prime numbers up to n """
-    primes = []
-    for i in range(2, n + 1):
-        if is_prime(i):
-            primes.append(i)
-    return primes
+    nums = list(range(2, n + 1))
+    primes, composites = [], []
+    if n < 4:
+        return nums, composites
 
-
-def play_round(n):
-    """ plays a round of the prime game """
-    primes = get_primes_up_to_n(n)
-    player = "Maria"
-
-    while n > 1:
-        move = 0
-        for prime in primes:
-            if prime <= n:
-                move = prime
-            else:
-                break
-
-        n -= move
-        primes = [p for p in primes if p % move != 0]
-
-        if player == "Maria":
-            player = "Ben"
+    for num in nums:
+        if num < 4:
+            primes.append(num)
         else:
-            player = "Maria"
+            for x in range(2, num + 1):
+                if not num % x:
+                    composites.append(num) if x != num else primes.append(num)
+                    break
 
-    return player
+    return primes, composites
 
 
-def isWinner(x: int, nums: List[int]) -> Optional[str]:
+def isWinner(x: int, nums: list) -> str:
     """
      Determine the winner of a prime game.
 
@@ -60,19 +36,15 @@ def isWinner(x: int, nums: List[int]) -> Optional[str]:
         Optional[str]: The name of the player that won the most rounds.
                        If the winner cannot be determined, returns None.
     """
-    maria_wins = 0
-    ben_wins = 0
-
-    for i in range(x):
-        winner = play_round(nums[i])
-        if winner == "Maria":
-            maria_wins += 1
-        elif winner == "Ben":
-            ben_wins += 1
-
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
+    if not isinstance(x, int) or x <= 0 \
+            or not nums or not isinstance(nums, list):
         return None
+
+    winner = 0
+    for n in nums[:x]:
+        if not isinstance(n, int):
+            continue
+        primes, composites = getPrimes(n)
+        winner += -1 if not len(primes) else -1 if not len(primes) % 2 else 1
+
+    return 'Maria' if winner > 0 else 'Ben' if winner < 0 else None
