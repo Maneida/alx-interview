@@ -1,18 +1,20 @@
 #!/usr/bin/python3
-"""
-Prime Game Module
-"""
-from typing import List
+"""Prime Game module"""
 
 
 def getPrimes(n: int) -> tuple:
-    """ Gets prime numbers up to n """
-    nums = list(range(2, n + 1))
+    """
+    Helper function to isolate the prime numbers in a range of integers
+    :param n: Upper bound of range of integers
+    :return: List of prime numbers and list of the composite integers.
+    """
+
+    numbers = list(range(2, n + 1))
     primes, composites = [], []
     if n < 4:
-        return nums, composites
+        return numbers, composites
 
-    for num in nums:
+    for num in numbers:
         if num < 4:
             primes.append(num)
         else:
@@ -26,15 +28,19 @@ def getPrimes(n: int) -> tuple:
 
 def isWinner(x: int, nums: list) -> str:
     """
-     Determine the winner of a prime game.
+    Uses the provided game stats `x` and `nums` to calculate the winner of
+    a Prime Game played between two players, Maria and Ben.
 
-    Args:
-        x (int): The number of rounds.
-        nums (List[int]): An array of n for each round.
+    A player loses a round when they have no turns left, so for each round,
+        - **Player 2/P2/Ben** wins if number of turns == 0 or even number,
+        - **Player 1/P1/Maria** wins if number of turns == odd number.
 
-    Returns:
-        Optional[str]: The name of the player that won the most rounds.
-                       If the winner cannot be determined, returns None.
+    The player with the highest number of rounds wins at the end of the
+    game, or it ends a draw if their scores are tied.
+
+    :param x: Number of rounds played
+    :param nums: List of n's, where `n` is max int per round
+    :return: Name of player that wins the most rounds if any, `None` if draw
     """
     if not isinstance(x, int) or x <= 0 \
             or not nums or not isinstance(nums, list):
@@ -45,6 +51,7 @@ def isWinner(x: int, nums: list) -> str:
         if not isinstance(n, int):
             continue
         primes, composites = getPrimes(n)
+
         winner += -1 if not len(primes) else -1 if not len(primes) % 2 else 1
 
     return 'Maria' if winner > 0 else 'Ben' if winner < 0 else None
